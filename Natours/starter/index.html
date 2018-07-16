@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+<!-- Good practice to place div around inline elements so you can control where it is on the page 
+    H1 element is most important element on the page to help google figure out what your page is all about for SEO
+    Spans are for styling text differently
+-->
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -13,7 +17,18 @@
         <title>Natours | Exciting tours for adventurous people</title>
     </head>
     <body>
-        
+        <header class="header">
+            <div class="logo-box">
+                <img src="img/logo-white.png" alt="Logo" class="logo">
+            </div>
+            <div class="text-box">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">Outdoors</span>
+                    <span class="heading-primary-sub">is where life happens</span>
+                </h1>
+            </div>
+            
+        </header>
         
     </body>
 </html>

@@ -6,3 +6,121 @@ Medium green: #55c57a
 Dark green: #28b485
 
 */
+
+/*
+    Always control height of elements and let browser figure out width
+    box-sizing gets rid of padding and margin when set to border-box of any box elements
+    background-position - specifies which side of the background should anchor when resizing and the opposite sides will be the ones to resize to keep dimensions
+    background-image - specifies layers of images to be used as the background, left to right is top layer to bottom layer, to right bottom is direction of gradient
+    polygon - specify four corners of the clip (change in x change in y,...) - top left, top right, bottom right, bottom left
+    clip-path - path to clip for content of element (triangle is clip-path: polygon(50% 0, 50% 0, 100% 100%, 0 100%))
+    position: relative on parent element allows for position absolute with **top left bottom right** specified from that reference parent element
+    display:block - turns the element this is assigned to, to a block level element (aka it takes up the whole width thats available to it)
+    transform: translate - -50% moves the element 50% of its width (not its parents width) in whichever direction is specified
+    @keyframes moveInLeft specifies animation where each percentage object specifies what should be happening at that time point - opacity and transform are the two animation properties that are optimized for the browser
+    ease-out - slower in beginning and faster at end
+    */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #777;
+    padding: 30px;
+}
+
+.header{
+    height: 95vh;
+    background-image: linear-gradient(
+        to right bottom, 
+        rgba(126, 213, 111, 0.8),
+        rgba(40, 180, 133, 0.8)), 
+         url("../img/hero.jpg");
+    background-size: cover;
+    background-position: top;
+    clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%);
+    position: relative;
+}
+
+.logo-box{
+    position: absolute;
+    top: 40px;
+    left: 40px;
+}
+
+.logo{
+    height: 35px;
+}
+
+.text-box{
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.heading-primary{
+    color: #ffffff;
+    text-transform: uppercase;
+    backface-visibility: hidden;
+}
+
+.heading-primary-main{
+    display: block;
+    font-size: 60px;
+    font-weight: 400;
+    letter-spacing: 35px;
+    animation: moveInLeft 1s ease-out;
+
+    /*
+    animation-iteration-count: 3;
+    animation-delay: 3s;
+    */
+}
+
+.heading-primary-sub{
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 17.4px;
+    animation: moveInRight 1s ease-out;
+}
+
+@keyframes moveInLeft{
+    0%{
+        opacity: 0;
+        transform: translateX(-100px);
+    }
+
+    80%{
+        transform: translateX(10px);
+    }
+
+    100%{
+        opacity: 1;
+        transform: translate(0);
+    }
+}
+
+@keyframes moveInRight{
+    0%{
+        opacity: 0;
+        transform: translateX(100px);
+    }
+
+    80%{
+        transform: translateX(-10px);
+    }
+
+    100%{
+        opacity: 1;
+        transform: translate(0);
+    }
+}
