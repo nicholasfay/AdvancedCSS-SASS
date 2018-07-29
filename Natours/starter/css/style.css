@@ -1,126 +1,620 @@
 /*
-COLORS:
+Codepens done during sections
+https://codepen.io/anon/pen/KBWmLp?editors=1100#0
 
-Light green: #7ed56f
-Medium green: #55c57a
-Dark green: #28b485
-
+Always control height of elements and let browser figure out width
+box-sizing gets rid of padding and margin when set to border-box of any box elements
+background-position - specifies which side of the background should anchor when resizing and the opposite sides will be the ones to resize to keep dimensions
+background-image - specifies layers of images to be used as the background, left to right is top layer to bottom layer, to right bottom is direction of gradient
+polygon - specify four corners of the clip (change in x change in y,...) - top left, top right, bottom right, bottom left
+clip-path - path to clip for content of element (triangle is clip-path: polygon(50% 0, 50% 0, 100% 100%, 0 100%))
+position: relative on parent element allows for position absolute with **top left bottom right** specified from that reference parent element
+display:block - turns the element this is assigned to, to a block level element (aka it takes up the whole width thats available to it)
+transform: translate - -50% moves the element 50% of its width (not its parents width) in whichever direction is specified
+@keyframes moveInLeft specifies animation where each percentage object specifies what should be happening at that time point - opacity and transform are the two animation properties that are optimized for the browser
+ease-out - slower in beginning and faster at end
+:link pseudo class is a special state of the selector - style elements under a special condition (this one is for when it is an anchor element)
+padding : top bottom, left right (50 50), top right bottom left (50 50 50 50)
+transition needs to be on the initial state and it specifies the duration of the properties that will change to the hover or active state
+box-shadow: x y blur color (positive x is right and positive y is down)
+"after" pseudo element is treated as a child of the element you are tying it to. and content must be specified even if its blank.
+z-index negative is behind other elements
+opacity: 0 is trick for making something fadeout
+animation backwards : will backwards fill the element and start it from 0 fill
+Three pillars of writing good html and css
+    Responsive design
+        one website that works well across all screen sizes and devices
+        standard today
+        Fluid layouts, media queries, responsive images, correct units, desktop first vs mobile first
+    Maintainable and scalable code
+        Clean, easy to understand, growth, reusable, how to organize files, how to name classes, how to structure HTML
+    Web performance
+        Less HTTP requests, less code, compress code, use a css preprocessor, less images, compress images
+What happens to CSS when we load up a webpage?
+Load HTML -> Parse HTML (decodes each line) -> Creates Document Object Model (DOM) Tree of children and parents
+                |-> Load CSS -> Parse CSS - 1. Resolve conflicting CSS declarations (cascade) - 2. Process final CSS values -> CSS Object Model (CSSOM)
+Both together are the render tree -> Website rendering : the visual formatting model -> Final rendered website
+A CSS rule is made up of the selector (e.g. .my-class) and the declaration block (e.g. color: blue; which is a declaration with a property and a declared value)
+Cascade
+    Process of combining different stylesheets and resolving conflicts between CSS rules and declarations, when more than one rule applies to a certain element
+    We make author declarations, there are user declarations (browser changes), default browser declarations (default browser user agent css)
+    It chooses importance through
+        Importance(weight) > specificity > Source order (last declaration in code overrides all other declarations)
+    Importance
+        1. User !important declarations
+        2. Author !important declarations
+        3. Author declarations
+        4. User declarations
+        5. Default browser declarations
+    Specificity (# - # - # - #) Highest priority on left and lowest on right (item with 1 ID is more specific than one with 1000 classes)
+        1. Inline styles
+        2. IDs
+        3. Classes, pseudo-classes, attribute
+        4. Elements, pseudo-elements
+Try to use specificities more than !important to make it more maintainable
+Universal selector has no specificity value (0,0,0,0)
+Rely on source order when usinng 3rd party stylesheets - always put author stylesheet last****
+How CSS values are processed 
+    *insert image here cssvals.png
+How units are converted from relative to absolute(px)
+    insert image here unitsconv.png
+    ems and rems are used for more robust layouts, because changing font sizes automatically changes length and gives flexibility with great strength
+    vh is 1% of viewport height
+    vw is 1% of viewport width
+    browsers specify a root font size for each page (usually 16 px)
+Inheritance in CSS
+    Every CSS property must have a value -> Is there a cascaded value? If Yes, specified value = cascaded value - If No -> Is the property inherited? (specific to each property) => If Yes, specified value = computed value of parent element - If no, Specified value = initial value (specific to each property)
+    Inherit keyword forces inheritance on a certain property
+    initial keyword resets a property to its initial value
+10px is for ease of use with root element html - 1 rem equals 10 pixels because of this
+Root font size as percentage is good practice because it takes percentage of browsers font size or if user changes then it takes their value and doesnt take precedence from being a author defined style by us at 50 px for example.
+Rem isnt supported below IE9
+Having box sizing inherit in universal selector and box sizing defined in body is better practice for plugins and such because it can be overridden and change the style
+The visual formatting model
+    Algorithm that calculates boxes and determines the layout of these boxes, for each element in the render tree, in order to determine the final layout of page
+        Dimensions of boxes: the box model;
+        Box type: inline, block and inline-block;
+        Positioning scheme: floats and positioning;
+        Stacking contexts;
+        Other elements in the render treel
+        Viewport size, dimensions of images, etc.
+The box model
+    insert image boxmodel.png
+Box sizing border box changes the width and height calc from being height plus padding and width plus padding to content height and width plus padding 
+display: block, display flex, display list item, display table all produce block level elements
+inline-boxes dont have padding and margins top and bottom and doesnt have height or width
+inline-block is a mixture and is allowed to have height and width and top bottom paddings with occupy content properties
+Positioning schemes
+    Normal Flow
+        default positioning scheme
+        not floated
+        not absolutely positioned
+        elements laid out according to their source order
+    Floats
+        element is removed from the normal flow
+        text and inline elements will wrap around the floated element
+        the container will not adjust its height to the element (container will not adjust to height of elemennt when it has float - fixed by using clear fixes)
+    Absolute positioning
+        element is removed from the normal flow
+        no impact on surrounding content or elements
+        we use top, bottom, left, and right to offset element from its relatively positioned container (can overlap other items but it is solved using stacking context in css - order of elements on page being rendered are layers that form a stack and high up stack goes last)
+Component driven design
+    Modular building blocks that make up interfaces
+    held togethr by the layout of the page
+    re-usable across a project, and between diff projects
+    independent, allowing us to use them anywhere on the page
+Block Element Modifier
+    .block
+    .block__element
+    .block__element--modifier
+    Low specificity BEM selectors
+7-1 pattern
+    7 different folders for partial Sass files, and
+    1 main Sass file to import all other files into a compiled CSS stylesheet (Can replace Sass with any other pre processor)
+    7 folders
+        base/
+        components/
+        layout/
+        pages/
+        themes/
+        abstracts/
+        vendors/
+New blocks can be nested inside other blocks in the BEM model   
+SASS
+    Sass is a CSS preprocessor, an extension of CSS that adds power and elegance to the basic language
+    sass source code -> sass compiler -> compiled css code
+    Main features
+        variables : for reusable values such as colors, font-sizes, spacing, etc
+        nesting : to nest selectors inside of one another, allowing us to write less
+        operators : for mathematical operations inside  of css
+        partials and imports : to write css in different files and importing them all into one file
+        mixins : to write reusable pieces of css code
+        functions : similar to mixins, with the difference that they produce a value that can than be used
+        extends : to make different selectors inherit declarations that are common to all of them
+        control directives : for writing complex code using conditionals and loops (not covered)
+    Two syntaxes
+        Sass - indentation sensitive and doesnt using curly braces
+        SCSS - Easier of the two to look like original css
+Review : Basic Responsive Design Principles
+    1. Fluid Grids and Layouts
+        To allow content to easily adapt to the current viewport width used to browse the website. Use % rather than px for all layout-related lengths
+    2. Flexible/Responsive images
+        Images behave differently than text content, and so we need to ensure that they also adapt nicely to the current viewport.
+    3. Media Queries
+        To change styles on certain viewport widths (breakpoints), allowing us to create different version of our website for different widths
+Layout Types
+    Float Layouts (As of 2017 most supported from all browsers)
+        Float -> Float -> Float
+    Flexbox
+    CSS GRID
 */
+@keyframes moveInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-10rem); }
+  80% {
+    transform: translateX(1rem); }
+  100% {
+    opacity: 1;
+    transform: translate(0); } }
 
-/*
-    Always control height of elements and let browser figure out width
-    box-sizing gets rid of padding and margin when set to border-box of any box elements
-    background-position - specifies which side of the background should anchor when resizing and the opposite sides will be the ones to resize to keep dimensions
-    background-image - specifies layers of images to be used as the background, left to right is top layer to bottom layer, to right bottom is direction of gradient
-    polygon - specify four corners of the clip (change in x change in y,...) - top left, top right, bottom right, bottom left
-    clip-path - path to clip for content of element (triangle is clip-path: polygon(50% 0, 50% 0, 100% 100%, 0 100%))
-    position: relative on parent element allows for position absolute with **top left bottom right** specified from that reference parent element
-    display:block - turns the element this is assigned to, to a block level element (aka it takes up the whole width thats available to it)
-    transform: translate - -50% moves the element 50% of its width (not its parents width) in whichever direction is specified
-    @keyframes moveInLeft specifies animation where each percentage object specifies what should be happening at that time point - opacity and transform are the two animation properties that are optimized for the browser
-    ease-out - slower in beginning and faster at end
-    */
+@keyframes moveInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(10rem); }
+  80% {
+    transform: translateX(-1rem); }
+  100% {
+    opacity: 1;
+    transform: translate(0); } }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+@keyframes moveInBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(3rem); }
+  100% {
+    opacity: 1;
+    transform: translateY(0); } }
 
-body{
-    font-family: "Lato", sans-serif;
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit; }
+
+html {
+  font-size: 62.5%; }
+
+body {
+  box-sizing: border-box; }
+
+body {
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  /* font-size: 16px; */
+  line-height: 1.7;
+  color: #777;
+  padding: 3rem; }
+
+.heading-primary {
+  color: #fff;
+  text-transform: uppercase;
+  backface-visibility: hidden;
+  margin-bottom: 6rem; }
+  .heading-primary--main {
+    display: block;
+    font-size: 6rem;
     font-weight: 400;
-    font-size: 16px;
-    line-height: 1.7;
-    color: #777;
-    padding: 30px;
-}
+    letter-spacing: 3.5rem;
+    animation: moveInLeft 1s ease-out;
+    /*
+            animation-iteration-count: 3;
+            animation-delay: 3s;
+        */ }
+  .heading-primary--sub {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 1.75rem;
+    animation: moveInRight 1s ease-out; }
 
-.header{
-    height: 95vh;
-    background-image: linear-gradient(
-        to right bottom, 
-        rgba(126, 213, 111, 0.8),
-        rgba(40, 180, 133, 0.8)), 
-         url("../img/hero.jpg");
-    background-size: cover;
-    background-position: top;
-    clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%);
-    position: relative;
-}
+.heading-secondary {
+  font-size: 3.5rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  background-image: linear-gradient(to right, #7ed56f, #28b485);
+  display: inline-block;
+  -webkit-background-clip: text;
+  color: transparent;
+  letter-spacing: 2px;
+  transition: all .2s; }
+  .heading-secondary:hover {
+    transform: skewY(2deg) skewX(15deg) scale(1.1);
+    text-shadow: 0.5rem 1rem 2rem rgba(0, 0, 0, 0.2); }
 
-.logo-box{
+.heading-tertiary {
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-transform: uppercase; }
+
+.paragraph {
+  font-size: 1.6rem; }
+  .paragraph:not(:last-child) {
+    margin-bottom: 3rem; }
+
+.u-center-text {
+  text-align: center; }
+
+.u-margin-bottom-big {
+  margin-bottom: 8rem; }
+
+.u-margin-bottom-medium {
+  margin-bottom: 4rem; }
+
+.u-margin-bottom-small {
+  margin-bottom: 1.5rem; }
+
+.u-margin-top-big {
+  margin-top: 8rem; }
+
+.u-margin-top-huge {
+  margin-top: 10rem; }
+
+.btn:link, .btn:visited {
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 1.5rem 4rem;
+  display: inline-block;
+  border-radius: 10rem;
+  transition: all .2s;
+  position: relative;
+  font-size: 1.6rem; }
+
+.btn:hover {
+  transform: translateY(-0.3rem);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2); }
+  .btn:hover::after {
+    transform: scaleX(1.4) scaleY(1.6);
+    opacity: 0; }
+
+.btn:active {
+  transform: translateY(-0.1rem);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2); }
+
+.btn--white {
+  background-color: #fff;
+  color: #777; }
+  .btn--white::after {
+    background-color: #fff; }
+
+.btn--green {
+  background-color: #55c57a;
+  color: #fff; }
+  .btn--green::after {
+    background-color: #55c57a; }
+
+.btn::after {
+  content: "";
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  border-radius: 10rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  transition: all .4s; }
+
+.btn--animated {
+  animation: moveInBottom .5s ease-out .75s;
+  animation-fill-mode: backwards; }
+
+.btn-text:link, .btn-text:visited {
+  font-size: 1.6rem;
+  color: #55c57a;
+  display: inline-block;
+  text-decoration: none;
+  border-bottom: 1px solid #55c57a;
+  padding: 3px;
+  transition: all .2s; }
+
+.btn-text:hover {
+  background-color: #55c57a;
+  color: #fff;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px); }
+
+.btn-text:active {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  transform: translateY(0); }
+
+.composition {
+  position: relative; }
+  .composition__photo {
+    width: 55%;
+    box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.4);
+    border-radius: 2px;
     position: absolute;
-    top: 40px;
-    left: 40px;
-}
+    z-index: 10;
+    transition: all .2s;
+    outline-offset: 2rem; }
+    .composition__photo--p1 {
+      left: 0;
+      top: -2rem; }
+    .composition__photo--p2 {
+      right: 0;
+      top: 2rem; }
+    .composition__photo--p3 {
+      left: 20%;
+      top: 10rem; }
+    .composition__photo:hover {
+      outline: 1.5rem solid #55c57a;
+      transform: scale(1.05) translateY(-0.5rem);
+      box-shadow: 0 2.5rem 4rem rgba(0, 0, 0, 0.5);
+      z-index: 20; }
+  .composition:hover .composition__photo:not(:hover) {
+    transform: scale(0.95); }
 
-.logo{
-    height: 35px;
-}
+.feature-box {
+  background-color: rgba(255, 255, 255, 0.8);
+  font-size: 1.5rem;
+  padding: 2.5rem;
+  text-align: center;
+  border-radius: 3px;
+  box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.15);
+  transition: transform .3s; }
+  .feature-box__icon {
+    font-size: 6rem;
+    margin-bottom: .5rem;
+    background-image: linear-gradient(to right, #7ed56f, #28b485);
+    -webkit-background-clip: text;
+    color: transparent;
+    display: inline-block; }
+  .feature-box:hover {
+    transform: translateY(-1.5rem) scale(1.03); }
 
-.text-box{
+.card {
+  perspective: 150rem;
+  -moz-perspective: 150rem;
+  position: relative;
+  height: 52rem; }
+  .card__side {
+    height: 52rem;
+    transition: all .8s ease;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    backface-visibility: hidden;
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.15); }
+    .card__side--front {
+      background-color: #fff; }
+    .card__side--back {
+      transform: rotateY(180deg); }
+      .card__side--back-1 {
+        background-image: linear-gradient(to right bottom, #ffb900, #ff7730); }
+      .card__side--back-2 {
+        background-image: linear-gradient(to right bottom, #7ed56f, #28b485); }
+      .card__side--back-3 {
+        background-image: linear-gradient(to right bottom, #2998ff, #5643fa); }
+  .card:hover .card__side--front {
+    transform: rotateY(-180deg); }
+  .card:hover .card__side--back {
+    transform: rotateY(0); }
+  .card__picture {
+    background-size: cover;
+    height: 23rem;
+    background-blend-mode: screen;
+    -webkit-clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px; }
+    .card__picture--1 {
+      background-image: linear-gradient(to right bottom, #ffb900, #ff7730), url(../img/nat-5.jpg); }
+    .card__picture--2 {
+      background-image: linear-gradient(to right bottom, #7ed56f, #28b485), url(../img/nat-6.jpg); }
+    .card__picture--3 {
+      background-image: linear-gradient(to right bottom, #2998ff, #5643fa), url(../img/nat-7.jpg); }
+  .card__heading {
+    font-size: 2.8rem;
+    font-weight: 300;
+    text-transform: uppercase;
+    text-align: right;
+    color: #fff;
+    position: absolute;
+    top: 12rem;
+    right: 2rem;
+    width: 75%; }
+  .card__heading-span {
+    padding: 1rem 1.5rem;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone; }
+    .card__heading-span--1 {
+      background-image: linear-gradient(to right bottom, rgba(255, 185, 0, 0.85), rgba(255, 119, 48, 0.85)); }
+    .card__heading-span--2 {
+      background-image: linear-gradient(to right bottom, rgba(126, 213, 111, 0.85), rgba(40, 180, 133, 0.85)); }
+    .card__heading-span--3 {
+      background-image: linear-gradient(to right bottom, rgba(41, 152, 255, 0.85), rgba(86, 67, 250, 0.85)); }
+  .card__details {
+    padding: 3rem; }
+    .card__details ul {
+      list-style: none;
+      width: 80%;
+      margin: 0 auto; }
+      .card__details ul li {
+        text-align: center;
+        font-size: 1.5rem;
+        padding: 1rem; }
+        .card__details ul li:not(:last-child) {
+          border-bottom: 1px solid #eee; }
+  .card__cta {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    text-align: center; }
+  .card__price-box {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 8rem; }
+  .card__price-only {
+    font-size: 1.4rem;
+    text-transform: uppercase; }
+  .card__price-value {
+    font-size: 6rem;
+    font-weight: 100; }
+
+.story {
+  width: 75%;
+  margin: 0 auto;
+  box-shadow: 0 3rem 6rem rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 3px;
+  padding: 6rem;
+  padding-left: 9rem;
+  font-size: 1.6rem;
+  transform: skewX(-12deg);
+  position: relative; }
+  .story__shape {
+    width: 15rem;
+    height: 15rem;
+    float: left;
+    shape-outside: circle(50% at 50% 50%);
+    -webkit-shape-outside: circle(50% at 50% 50%);
+    clip-path: circle(50% at 50% 50%);
+    -webkit-clip-path: circle(50% at 50% 50%);
+    transform: translateX(-3rem) skewX(12deg); }
+  .story__img {
+    height: 100%;
+    transform: translateX(-4rem) scale(1.4);
+    backface-visibility: hidden;
+    transition: all .5s; }
+  .story__text {
+    transform: skewX(12deg); }
+  .story__caption {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 20%);
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 1.7rem;
+    text-align: center;
+    opacity: 0;
+    transition: all .5s;
+    backface-visibility: hidden; }
+  .story:hover .story__caption {
+    opacity: 1;
+    transform: translate(-50%, -50%); }
+  .story:hover .story__img {
+    transform: translateX(-4rem) scale(1);
+    filter: blur(3px) brightness(80%); }
+
+.bg-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  opacity: .15;
+  overflow: hidden; }
+  .bg-video__content {
+    height: 100%;
+    width: 100%;
+    object-fit: cover; }
+
+.form__input {
+  font-size: 1.5rem;
+  padding: 1.5rem 2rem;
+  border-radius: 2px;
+  background-color: white;
+  border: none; }
+
+.row {
+  max-width: 114rem;
+  margin: 0 auto; }
+  .row:not(:last-child) {
+    margin-bottom: 8rem; }
+  .row::after {
+    content: "";
+    display: table;
+    clear: both; }
+  .row [class^="col-"] {
+    float: left; }
+    .row [class^="col-"]:not(:last-child) {
+      margin-right: 6rem; }
+  .row .col-1-of-2 {
+    width: calc((100% - 6rem) / 2); }
+  .row .col-1-of-3 {
+    width: calc((100% - 2 * 6rem) / 3); }
+  .row .col-1-of-4 {
+    width: calc((100% - 3 * 6rem) / 4); }
+  .row .col-2-of-3 {
+    width: calc(2 * ((100% - 2 * 6rem) / 3) + 6rem); }
+  .row .col-2-of-4 {
+    width: calc(2 * ((100% - 3 * 6rem) / 4) + 6rem); }
+  .row .col-3-of-4 {
+    width: calc(3 * ((100% - 3 * 6rem) / 4) + 2 * 6rem); }
+
+.header {
+  height: 95vh;
+  background-image: linear-gradient(to right bottom, rgba(126, 213, 111, 0.8), rgba(40, 180, 133, 0.8)), url("../img/hero.jpg");
+  background-size: cover;
+  background-position: top;
+  -webkit-clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%);
+  position: relative; }
+  .header__logo-box {
+    position: absolute;
+    top: 4rem;
+    left: 4rem; }
+  .header__logo {
+    height: 3.5rem; }
+  .header__text-box {
     position: absolute;
     top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
-}
+    text-align: center; }
 
-.heading-primary{
-    color: #ffffff;
-    text-transform: uppercase;
-    backface-visibility: hidden;
-}
+.section-about {
+  background-color: #f7f7f7;
+  padding: 25rem 0;
+  margin-top: -20vh; }
 
-.heading-primary-main{
-    display: block;
-    font-size: 60px;
-    font-weight: 400;
-    letter-spacing: 35px;
-    animation: moveInLeft 1s ease-out;
+.section-features {
+  padding: 20rem 0;
+  background-image: linear-gradient(to right bottom, rgba(126, 213, 111, 0.8), rgba(40, 180, 133, 0.8)), url("../img/nat-4.jpg");
+  background-size: cover;
+  transform: skewY(-7deg);
+  margin-top: -10rem; }
+  .section-features > * {
+    transform: skewY(7deg); }
 
-    /*
-    animation-iteration-count: 3;
-    animation-delay: 3s;
-    */
-}
+.section-tours {
+  background-color: #f7f7f7;
+  padding: 25rem 0 15rem 0;
+  margin-top: -10rem; }
 
-.heading-primary-sub{
-    display: block;
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: 17.4px;
-    animation: moveInRight 1s ease-out;
-}
+.section-stories {
+  padding: 15rem 0;
+  position: relative; }
 
-@keyframes moveInLeft{
-    0%{
-        opacity: 0;
-        transform: translateX(-100px);
-    }
+.section-book {
+  padding: 15rem 0;
+  background-image: linear-gradient(to right bottom, #7ed56f, #28b485); }
 
-    80%{
-        transform: translateX(10px);
-    }
-
-    100%{
-        opacity: 1;
-        transform: translate(0);
-    }
-}
-
-@keyframes moveInRight{
-    0%{
-        opacity: 0;
-        transform: translateX(100px);
-    }
-
-    80%{
-        transform: translateX(-10px);
-    }
-
-    100%{
-        opacity: 1;
-        transform: translate(0);
-    }
-}
+.book {
+  background-image: linear-gradient(105deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.9) 50%, transparent 50%), url(../img/nat-10.jpg);
+  background-size: 100%;
+  border-radius: 3px;
+  box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.15);
+  height: 50rem; }
+  .book__form {
+    width: 50%;
+    padding: 6rem; }
