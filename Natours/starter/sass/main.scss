@@ -93,7 +93,7 @@ Positioning schemes
     Floats
         element is removed from the normal flow
         text and inline elements will wrap around the floated element
-        the container will not adjust its height to the element (container will not adjust to height of elemennt when it has float - fixed by using clear fixes)
+        the container will not adjust its height to the element (container will not adjust to height of element when it has float - fixed by using clear fixes)
     Absolute positioning
         element is removed from the normal flow
         no impact on surrounding content or elements
@@ -147,6 +147,66 @@ Layout Types
         Float -> Float -> Float
     Flexbox
     CSS GRID
+
+Can use anchors (e.g. #header for header id) then use :target pseudo selector to cause something to happen on click
+
+Mobile first vs Desktop first and selecting breakpoints for media queries
+    Desktop first
+        Start writing CSS for the desktop: large screen;
+        Then media queries shrink design to smaller screens
+        Use media queries that test for max width in this approach
+    Mobile first
+        Start writinng CSS for mobile: small screen
+        Media queries to expand to a large desktop screen
+        Forces us to reduce websites and apps to the absolute essentials
+        Use media queries that test for min width in this approach
+    
+    Max width media query is basically a check - Is width greater than 600 px? If yes, dont apply this anymore If no, apply this style
+    Think of media queries as the ability to override specific CSS styles based on viewport width
+    If a viewport satisfies multiple media queries then the one that is further down in your code will take precedence
+    They do not add any specificity so that is why this is the case. Media queries are always at the end of the file
+    Min width is the opposite of this - min width at which a query starts to apply
+
+Mobile first pros and cons (take this with a grain of salt, desktop is mostly better but there are cases where mobile may matter more, just always keep both in mind)
+    pros
+        100% optimised for the mobile experience
+        Reduces websites and apps to the absolute essentials
+        Results in smaller, faster and more efficient products
+        Prioritizes content over aesthetic design, which may be desirable
+    cons
+        desktop version might feel overly empty and simplistic
+        more difficult and counterintuitive to develop
+        less creative freedom making it more difficult to create distinctive products
+        clients are used to see a desktop version of the site as a prototype
+        do your users even use the mobile internet? whats the purpose of your website?
+
+Selecting breakpoints
+    Good way is to bin all currently used devices and set logical breakpoints from there
+    Perfect way is to test the points where the design begins to look weird or break and fix it there
+
+    5 categories of breakpoints
+        phone only
+        tablet portrait
+        tablet landscape
+        desktop
+        big desktop (optional)
+
+Em is best for font-size when doing media queries - verified by literature in the field
+
+Responsive images
+    Crucial for web performance
+    Goal: to server the right image to the right screen size and device
+        avoids downloading large images on smaller screens for no reason (example 1MB for desktop but not for mobile, needs 200 kb for mobile)
+    3 use cases
+        Resolution switching - decrease image resolution on smaller screen
+        Density switching - density is amount of pixels in 1 inch of screen - low res and high res (1x screen (1 pixel for 1 pixel of our design (100 physical pixels high for 100pixel element)) high res screen (macbook retina display and smart phones are  2x screens, 2 physical pixels for 1 pixel of our design, so a 100 pixel element is 200 physical pixels high
+        Art Direction - different image on smaller screen
+Density Descriptor example for html images
+    <img srcset="img/logo-green-1x.png 1x, img/logo-green-2x.png 2x" alt="Full logo", class="footer__logo">
+    where 1x and 2x are the density descriptors
+Always implement graceful degradation
+    Top notch experience for modern browsers and reduced adaptive experience for older browsers
+
 */
 
 @import "abstracts/functions";
@@ -165,8 +225,11 @@ Layout Types
 @import "components/story";
 @import "components/bg-video";
 @import "components/form";
+@import "components/popup";
 
 @import "layout/grid";
 @import "layout/header";
+@import "layout/footer";
+@import "layout/navigation";
 
 @import "pages/home";
